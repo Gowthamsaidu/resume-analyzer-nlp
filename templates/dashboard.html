@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>AI Resume Analyzer</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(120deg,#4facfe,#6a11cb);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.container{
+width:520px;
+background:white;
+padding:30px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h2{
+margin-bottom:20px;
+}
+
+button{
+padding:12px 20px;
+background:#4facfe;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#3c9be8;
+}
+
+.score{
+font-size:32px;
+font-weight:bold;
+color:#4facfe;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+background:#f2f2f2;
+margin:6px;
+padding:8px;
+border-radius:5px;
+}
+
+.section{
+margin-top:25px;
+}
+
+.logout{
+margin-top:20px;
+display:inline-block;
+}
+
+.progress{
+width:100%;
+background:#eee;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.bar{
+height:20px;
+background:#4facfe;
+width:0%;
+transition:width 0.5s;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>AI Resume Analyzer</h2>
+
+<form id="form">
+
+<input type="file" name="resume" required>
+
+<br><br>
+
+<select name="company">
+
+{% for c in companies %}
+<option value="{{c}}">{{c}}</option>
+{% endfor %}
+
+</select>
+
+<br><br>
+
+<button type="submit">Analyze Resume</button>
+
+</form>
+
+
+<div class="section">
+
+<h3>ATS Score</h3>
+
+<div id="score" class="score">--</div>
+
+<div class="progress">
+<div id="scorebar" class="bar"></div>
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h3>Resume Section Analysis</h3>
+
+<ul id="sections"></ul>
+
+</div>
+
+
+<div class="section">
+
+<h3>Missing Skills</h3>
+
+<ul id="missing_skills"></ul>
+
+</div>
+
+
+<div class="section">
+
+<h3>AI Suggestions</h3>
+
+<ul id="suggestions"></ul>
+
+</div>
+
+
+<a class="logout" href="/logout">Logout</a>
+
+</div>
+
+
+<script>
+
+document.getElementById("form").onsubmit = async function(e){
+
+e.preventDefault();
+
+let formData = new FormData(this);
+
+let res = await fetch("/analyze",{
+method:"POST",
+body:formData
+});
+
+let data = await res.json();
+
+
+// ATS SCORE
+document.getElementById("score").innerText = data.score + "%";
+document.getElementById("scorebar").style.width = data.score + "%";
+
+
+// SECTION ANALYSIS
+let sectionList = document.getElementById("sections");
+sectionList.innerHTML="";
+
+if(data.sections){
+
+for(let key in data.sections){
+
+let li=document.createElement("li");
+
+li.innerText = key.replace("_"," ") + " : " + data.sections[key] + "%";
+
+sectionList.appendChild(li);
+
+}
+
+}
+
+
+// MISSING SKILLS
+let skillsList = document.getElementById("missing_skills");
+skillsList.innerHTML="";
+
+if(data.missing_skills){
+
+data.missing_skills.forEach(skill=>{
+
+let li=document.createElement("li");
+
+li.innerText=skill;
+
+skillsList.appendChild(li);
+
+});
+
+}
+
+
+// AI SUGGESTIONS
+let suggestionsList=document.getElementById("suggestions");
+suggestionsList.innerHTML="";
+
+if(data.suggestions){
+
+data.suggestions.forEach(s=>{
+
+let li=document.createElement("li");
+
+li.innerText=s;
+
+suggestionsList.appendChild(li);
+
+});
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
