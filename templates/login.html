@@ -1,32 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>AI Resume Analyzer - Login</title>
+
     <style>
-        body {
-            background: linear-gradient(to right, #4facfe, #6a11cb);
-            font-family: Arial;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
-        .box {
-            width: 300px;
-            margin: 120px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+
+        body{
+
+            font-family:Arial, sans-serif;
+
+            background-image:url("/static/images/login_bg.jpg");
+
+            background-size:cover;
+            background-position:center;
+            background-repeat:no-repeat;
+
+            min-height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
         }
+
+        .box{
+
+            width:350px;
+
+            padding:30px;
+
+            background:rgba(255,255,255,0.15);
+
+            backdrop-filter:blur(10px);
+
+            border-radius:15px;
+
+            text-align:center;
+
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
+
+        }
+
+        h2{
+            color:white;
+            margin-bottom:20px;
+        }
+
+        input{
+
+            width:100%;
+
+            padding:12px;
+
+            margin:10px 0;
+
+            border:none;
+
+            border-radius:8px;
+        }
+
+        button{
+
+            width:100%;
+
+            padding:12px;
+
+            background:#4facfe;
+
+            color:white;
+
+            border:none;
+
+            border-radius:8px;
+
+            cursor:pointer;
+
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#2f8ef5;
+        }
+
+        a{
+            color:white;
+            text-decoration:none;
+        }
+
     </style>
+
 </head>
+
 <body>
+
 <div class="box">
-    <h2>Login</h2>
+
+    <h2>AI Resume Analyzer</h2>
+
     <form method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username" required><br><br>
-        <input type="password" name="password" placeholder="Password" required><br><br>
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required>
+
         <button type="submit">Login</button>
+
     </form>
+
     <br>
+
     <a href="/signup">Create Account</a>
+
 </div>
+
 </body>
 </html>
+```
